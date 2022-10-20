@@ -1,0 +1,14 @@
+::selection {
+    color: #fff;
+    background: hsl(264, 36%, 29%);
+}
+
+
+.box-shadow{
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.p-modify p{
+    font-size: 0.95rem;
+}
+
