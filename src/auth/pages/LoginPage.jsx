@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from "@mui/icons-material"
@@ -9,11 +10,15 @@ import { useForm } from '../../hooks';
 
 export const LoginPage = () => {
 
+
+  const { status }= useSelector( state=> state.auth );
+
   const { email, password, onInputChange } = useForm({
-    email: 'sebastian@gmail.com',
+    email: '',
     password: ''
   });
 
+  const isAuthtenticated = useMemo(() => status === 'checking', [status] );
 
   const dispatch= useDispatch();
 
@@ -24,7 +29,6 @@ export const LoginPage = () => {
   }
 
   const onGoogleSignIn = () => {
-    console.log('onGoogleSignIn');
     dispatch( startGoogleSignIn() )
   }
 
@@ -72,7 +76,11 @@ export const LoginPage = () => {
               xs={12}
               sm={6}
             >
-              <Button type="submit" variant="contained" fullWidth>
+              <Button 
+                disabled={isAuthtenticated}
+                type="submit" 
+                variant="contained" 
+                fullWidth>
                 Iniciar sesión
               </Button>
             </Grid>
@@ -82,6 +90,7 @@ export const LoginPage = () => {
               sm={6}
             >
               <Button 
+                disabled={ isAuthtenticated }
                 variant="contained" 
                 fullWidth
                 onClick={ onGoogleSignIn }>
