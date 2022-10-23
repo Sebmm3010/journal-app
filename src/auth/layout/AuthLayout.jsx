@@ -22,7 +22,7 @@ export const AuthLayout = ({ children, title = '' }) => {
                     borderRadius: 2
                 }}
             >
-                <Typography variant="h5" sx={{ mb: 1 }}>{title}</Typography>
+                <Typography className='animate__animated animate__fadeInUp animate__faster' variant="h5" sx={{ mb: 1 }}>{title}</Typography>
                 {children}
             </Grid>
         </Grid>

@@ -51,7 +51,7 @@ export const LoginPage = () => {
 
     <AuthLayout title="Login">
 
-      <form onSubmit={onSubmit} >
+      <form onSubmit={onSubmit} className='animate__animated animate__fadeIn animate__faster' >
         <Grid container>
           <Grid item
             xs={12}
@@ -91,11 +91,16 @@ export const LoginPage = () => {
             spacing={2}
             sx={{ mb: 2, mt: 1 }}
           >
-            <Grid item
-              xs={12}
+            <Grid container
               display={!!errorMessage ? '' : 'none'}
             >
-              <Alert severity='error'>{errorMessage}</Alert>
+              <Grid item
+                xs={12}
+              >
+                <Alert
+                  severity='error'
+                >{errorMessage}</Alert>
+              </Grid>
             </Grid>
             <Grid item
               xs={12}

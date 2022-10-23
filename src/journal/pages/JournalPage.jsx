@@ -15,6 +15,7 @@ export const JournalPage = () => {
       {/* <NoteView/> */}
 
       <IconButton
+        
         size="large"
         sx={{
           color: "white",
