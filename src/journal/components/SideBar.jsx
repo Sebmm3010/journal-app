@@ -13,7 +13,7 @@ import {
     Typography
 } from "@mui/material"
 import { useSelector } from "react-redux";
-import { capitalizarPrimeraLetra } from "../../helpers/capitalizarPrimeraLetra";
+import { capFirstLetter } from "../../helpers";
 
 
 export const SideBar = ({ drawerWidth = 240 }) => {
@@ -35,7 +35,7 @@ export const SideBar = ({ drawerWidth = 240 }) => {
             >
                 <Toolbar>
                     <Typography variant="h6" noWrap component='div' className='animate__animated animate__fadeInUp animate__faster'>
-                        { capitalizarPrimeraLetra( displayName ) }
+                        { capFirstLetter( displayName ) }
                     </Typography>
                 </Toolbar>
                 <Divider />
