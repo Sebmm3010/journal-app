@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { Google } from "@mui/icons-material"
-import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Google, Visibility, VisibilityOff } from "@mui/icons-material"
+import { Alert, Button, Grid, IconButton, InputAdornment, Link, TextField, Typography } from "@mui/material"
 import { AuthLayout } from '../layout/AuthLayout';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
 import { useForm } from '../../hooks';
@@ -47,6 +47,10 @@ export const LoginPage = () => {
     dispatch(startGoogleSignIn())
   }
 
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
   return (
 
     <AuthLayout title="Login">
@@ -75,7 +79,7 @@ export const LoginPage = () => {
           >
             <TextField
               label="Contraseña"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Contraseña"
               fullWidth
               name="password"
@@ -83,6 +87,19 @@ export const LoginPage = () => {
               onChange={onInputChange}
               error={!!passwordValid && formSubmitted}
               helperText={passwordValid}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
           </Grid>
 

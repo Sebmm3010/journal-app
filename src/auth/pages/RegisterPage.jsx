@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, IconButton, InputAdornment, Link, TextField, Typography } from "@mui/material"
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
 import { startCreatingUserWithEmailPassword } from '../../store/auth/thunk';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 const formData = {
@@ -42,6 +43,9 @@ export const RegisterPage = () => {
     dispath( startCreatingUserWithEmailPassword(formState) );
 
   }
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   return (
 
@@ -88,7 +92,7 @@ export const RegisterPage = () => {
           >
             <TextField
               label="Contraseña"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Contraseña"
               fullWidth
               name="password"
@@ -96,6 +100,19 @@ export const RegisterPage = () => {
               onChange={onInputChange}
               error={!!passwordValid && formSubmitted}
               helperText={passwordValid}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
           </Grid>
 
