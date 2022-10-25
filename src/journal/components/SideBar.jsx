@@ -7,7 +7,6 @@ import {
     Typography
 } from "@mui/material"
 import { useSelector } from "react-redux";
-import { capFirstLetter } from "../../helpers";
 import { SideBarItem } from "./";
 
 
@@ -15,6 +14,7 @@ export const SideBar = ({ drawerWidth = 240 }) => {
 
     const { displayName } = useSelector( state=> state.auth );
     const { notes }= useSelector(state=> state.journal);
+    const name = displayName?.charAt(0).toUpperCase() + displayName?.slice(1);
 
     return (
         <Box
@@ -31,7 +31,7 @@ export const SideBar = ({ drawerWidth = 240 }) => {
             >
                 <Toolbar>
                     <Typography variant="h6" noWrap component='div' className='animate__animated animate__fadeInUp animate__faster'>
-                        { capFirstLetter( displayName ) }
+                        { name }
                     </Typography>
                 </Toolbar>
                 <Divider />

@@ -1,70 +1,89 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useRef } from "react"
 
-import { SaveOutlined } from "@mui/icons-material"
-import { Button, Grid, TextField, Typography } from "@mui/material"
+import { SaveOutlined, FileUploadOutlined, Notes, DeleteOutline } from "@mui/icons-material"
+import { Button, Grid, IconButton, TextField, Typography } from "@mui/material"
 
-import { useDispatch, useSelector } from "react-redux"
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useForm } from "../../hooks/useForm"
-import { startSaveNote } from "../../store/journal"
-import { setActiveNote } from "../../store/journal/journalSlice"
+
 import { ImgGallery } from "../components"
+import { useNoteView } from "../hooks";
 
 
 
-const formValidations={
+const formValidations = {
     title: [(value = '') => value.length >= 1, 'No es posible guardar notas sin titulo'],
     body: [(value = '') => value.length >= 1, 'No es posible guardar notas sin contenido']
 }
 
 export const NoteView = () => {
 
-    const dispatch= useDispatch();
-    const { active: note, messageSaved, isSaving } = useSelector(state => state.journal)
-    
+    // const dispatch = useDispatch();
+    // const { active: note, messageSaved, isSaving } = useSelector(state => state.journal)
 
-    const [formSubbmited, setFormSubbmited] = useState(false);
-    const { body, title, date, onInputChange, formState,
-            bodyValid, titleValid, isFormValid} = useForm(note, formValidations);
 
-    const dateString= useMemo(() => {
-        const newDate= new Date(date);
-        return newDate.toDateString()+'.';
-    }, [date]);
+    // const [formSubbmited, setFormSubbmited] = useState(false);
+    // const { body, title, date, onInputChange, formState,
+    //     bodyValid, titleValid, isFormValid } = useForm(note, formValidations);
 
+    // useEffect(() => {
+    //     dispatch(setActiveNote(formState));
+    // }, [formState]);
+
+
+
+    // const dateString = useMemo(() => {
+    //     const newDate = new Date(date);
+    //     return newDate.toDateString() + '.';
+    // }, [date]);
+
+
+    // const onSaveNote = () => {
+    //     setFormSubbmited(true);
+    //     if (!isFormValid) return;
+    //     dispatch(startSaveNote());
+    //     setFormSubbmited(false);
+    // }
+    // const onFileInputChange = ({ target }) => {
+    //     if (target.files === 0) return;
+    //     dispatch(startUploadingFiles(target.files));
+    // }
+    // const onDelete=()=>{
+    //     dispatch(startDeletingNote());
+    // }
+    const {
+        dateString,
+        onFileInputChange,
+        isSaving,
+        onSaveNote,
+        title,
+        titleValid,
+        formSubbmited,
+        onInputChange,
+        body,
+        bodyValid,
+        onDelete,
+        note,
+        messageSaved
+    } = useNoteView(formValidations);
     useEffect(() => {
-        dispatch( setActiveNote(formState));
-    }, [formState]);
-
-    useEffect(() => {
-      if(messageSaved.length>0){
-          toast.success(messageSaved, {
-              position: "top-right",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-          });
-      }
+        if (messageSaved.length > 0) {
+            toast.success(messageSaved, {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        }
     }, [messageSaved]);
-    
 
-    
-    const onSaveNote=()=>{
-        
-        setFormSubbmited(true);
-        if(!isFormValid) return;
-        dispatch( startSaveNote() );
-        setFormSubbmited(false);
-    }
-    
-
+    const fileInputRef = useRef();
     return (
         <>
             <Grid container
@@ -80,8 +99,26 @@ export const NoteView = () => {
                 </Grid>
                 {/* Boton guardar */}
                 <Grid item>
+                    <input
+                        type="file"
+                        multiple
+                        name=""
+                        id=""
+                        onChange={onFileInputChange}
+                        style={{ display: 'none' }}
+                        ref={fileInputRef}
+                    />
+
+                    <IconButton
+                        color="primary"
+                        disabled={isSaving}
+                        onClick={() => fileInputRef.current.click()}
+                    >
+                        <FileUploadOutlined />
+                    </IconButton>
+
                     <Button
-                        disabled={ isSaving }
+                        disabled={isSaving}
                         onClick={onSaveNote}
                         color='primary'
                         sx={{ padding: 2 }}
@@ -122,9 +159,21 @@ export const NoteView = () => {
                         helperText={formSubbmited ? bodyValid : ''}
                     />
                 </Grid>
+                <Grid container
+                    justifyContent='end'
+                >
+                    <Button
+                        onClick={onDelete}
+                        sx={{ mt: 2 }}
+                        color='error'
+                    >
+                        <DeleteOutline />
+                        Borrar
+                    </Button>
+                </Grid>
 
                 {/* Galeria */}
-                <ImgGallery />
+                <ImgGallery images={note.imageUrls} />
             </Grid>
             <ToastContainer />
         </>
