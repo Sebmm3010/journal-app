@@ -2,7 +2,7 @@ import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import { loadNotes } from "../../helpers";
 import { addNewEmptyNote, setActiveNote } from "./";
-import { savingNewNote, setNotes } from "./journalSlice";
+import { savingNewNote, setNotes, setSaving, updateNote } from "./journalSlice";
 
 export const startNewNote = () => {
 
@@ -13,8 +13,8 @@ export const startNewNote = () => {
         const { uid } = getState().auth;
 
         const newNote = {
-            title: '',
-            body: '',
+            title: 'Titulo',
+            body: 'Cuerpo de la nota',
             date: new Date().getTime(),
         }
 
@@ -35,10 +35,27 @@ export const startNewNote = () => {
 export const startLoadingNotes = () => {
     return async (dispatch, getState) => {
 
-        const { uid }= getState().auth;
-        if(!uid) throw new Error('El uid del usuario no existe');
+        const { uid } = getState().auth;
+        if (!uid) throw new Error('El uid del usuario no existe');
 
-        const notes=await loadNotes( uid );
+        const notes = await loadNotes(uid);
         dispatch(setNotes(notes));
+    }
+}
+
+export const startSaveNote = () => {
+    return async (dispatch, getState) => {
+
+        dispatch(setSaving());
+
+        const { uid } = getState().auth;
+        const { active: note } = getState().journal;
+
+        const noteToFireStore = { ...note };
+        delete noteToFireStore.id;
+        const docRef = doc(FirebaseDB, `${uid}/journal/notas/${note.id}`);
+
+        await setDoc(docRef, noteToFireStore, { merge: true });
+        dispatch(updateNote(note));
     }
 }

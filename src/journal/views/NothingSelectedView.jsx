@@ -1,29 +1,31 @@
 import { StarBorderOutlined } from "@mui/icons-material"
-import { Grid, Typography } from "@mui/material"
+import { Grid, TextField, Typography } from "@mui/material"
 
 
 export const NothingSelectedView = () => {
   return (
-    <Grid container
-      className="animate___animated animate__fadeIn animate__faster"
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      sx={{ minHeight: 'calc( 100vh - 110px )', backgroundColor: 'primary.main', borderRadius: 3 }}
-    >
-      <Grid item
-        xs={12}
+    <>
+      <Grid container
+        className="animate___animated animate__fadeIn animate__faster"
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ minHeight: 'calc( 100vh - 110px )', backgroundColor: 'primary.main', borderRadius: 3 }}
       >
-        <StarBorderOutlined sx={{ fontSize: 100, color: 'white' }} />
+        <Grid item
+          xs={12}
+        >
+          <StarBorderOutlined sx={{ fontSize: 100, color: 'white' }} />
+        </Grid>
+        <Grid item
+          xs={12}
+        >
+          <Typography color='white' variant='h5' mt='20px'>
+            Seleccione o creé una entrada
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid item
-        xs={12}
-      >
-        <Typography color='white' variant='h5' mt='20px'>
-          Seleccione o creé una entrada
-        </Typography>
-      </Grid>
-    </Grid>
+    </>
   )
 }
