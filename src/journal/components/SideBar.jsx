@@ -3,6 +3,7 @@ import {
     Divider,
     Drawer,
     List,
+    TextField,
     Toolbar,
     Typography
 } from "@mui/material"
@@ -12,9 +13,15 @@ import { SideBarItem } from "./";
 
 export const SideBar = ({ drawerWidth = 240 }) => {
 
+    const upper=(name='')=>{
+        if(name){
+            return name.charAt(0).toUpperCase() + name.slice(1);
+        }
+        return name='';
+    }
+
     const { displayName } = useSelector( state=> state.auth );
     const { notes }= useSelector(state=> state.journal);
-    const name = displayName?.charAt(0).toUpperCase() + displayName?.slice(1);
 
     return (
         <Box
@@ -31,7 +38,7 @@ export const SideBar = ({ drawerWidth = 240 }) => {
             >
                 <Toolbar>
                     <Typography variant="h6" noWrap component='div' className='animate__animated animate__fadeInUp animate__faster'>
-                        { name }
+                        { upper(displayName) }
                     </Typography>
                 </Toolbar>
                 <Divider />

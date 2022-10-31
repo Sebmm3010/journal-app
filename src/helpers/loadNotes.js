@@ -7,7 +7,7 @@ export const loadNotes = async( uid='' ) => {
     if (!uid) throw new Error('El uid del usuario no existe');
 
     const collectionRef = collection(FirebaseDB, `${uid}/journal/notas`);
-    const q= query(collectionRef, orderBy('date', 'asc'));
+    const q= query(collectionRef, orderBy('date', 'desc'));
     const docs= await getDocs( q );
 
     const notes=[];
